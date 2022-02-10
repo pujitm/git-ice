@@ -21,6 +21,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/reflow/padding"
 )
 
 var (
@@ -64,17 +65,17 @@ func (d selectorDelegate) Render(writer io.Writer, m list.Model, index int, item
 	const (
 		// TODO get length of longest item.Title() dynamically
 		widestTitleLength = 6
-		// a constant gap to left justify commitType title in relation to its description
-		// Most likely dependent on visual configurations via lipgloss + stuff I don't understand/care to understand
-		padDistance = 25
+		// Total horizontal padding in title styling
+		titleHorizontalPad = 2
 	)
-	fmt.Fprintf(writer, "%-*s%s", padDistance+widestTitleLength, title, desc)
+	fmt.Fprintf(writer, "%s %s", padding.String(title, widestTitleLength+titleHorizontalPad), desc)
 }
 
 func getItemStyles() list.DefaultItemStyles {
 	s := list.NewDefaultItemStyles()
 	s.SelectedTitle = s.NormalTitle.Copy().
-		Foreground(lipgloss.AdaptiveColor{Light: "#EE6FF8", Dark: "#EE6FF8"})
+		Foreground(lipgloss.AdaptiveColor{Light: "#EE6FF8", Dark: "#EE6FF8"}).Bold(true)
+	s.SelectedDesc = s.SelectedDesc.Copy().Bold(true)
 
 	return s
 }
