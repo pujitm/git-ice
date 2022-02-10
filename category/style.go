@@ -25,7 +25,8 @@ import (
 )
 
 var (
-// itemStyle = list.NewDefaultItemStyles()
+	docStyle = lipgloss.NewStyle().Margin(1, 2)
+	// itemStyle = list.NewDefaultItemStyles()
 )
 
 type selectorDelegate struct{}

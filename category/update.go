@@ -9,7 +9,7 @@ import (
 // 	types []commitType
 // }
 
-func (state typeSelection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (state *typeSelection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	// case updateTypeOptions:
 	// 	var items []list.Item
