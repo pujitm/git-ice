@@ -19,6 +19,7 @@ import (
 	"os"
 	"pujitm/git-ice/category"
 	"pujitm/git-ice/compatibility"
+	"pujitm/git-ice/subject"
 )
 
 func main() {
@@ -28,7 +29,14 @@ func main() {
 	compatible, err := compatibility.Prompt()
 	handleError(err)
 
-	fmt.Printf("Results: %s, %v\n", commitType, compatible)
+	subject, err := subject.Prompt()
+	handleError(err)
+
+	scope := ""
+
+	fmt.Printf("# %s%s: %s\n", commitType, scope, subject)
+
+	fmt.Printf("Results: %s, %v, %s\n", commitType, compatible, subject)
 
 }
 
