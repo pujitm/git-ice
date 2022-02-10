@@ -18,16 +18,23 @@ import (
 	"fmt"
 	"os"
 	"pujitm/git-ice/category"
-
-	tea "github.com/charmbracelet/bubbletea"
+	"pujitm/git-ice/compatibility"
 )
 
 func main() {
+	commitType, err := category.RunPrompt()
+	handleError(err)
 
-	p := tea.NewProgram(category.Model())
+	compatible, err := compatibility.Prompt()
+	handleError(err)
 
-	if err := p.Start(); err != nil {
-		fmt.Println("Error running program:", err)
+	fmt.Printf("Results: %s, %v\n", commitType, compatible)
+
+}
+
+func handleError(err error) {
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
 }

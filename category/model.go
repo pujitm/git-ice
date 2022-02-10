@@ -3,10 +3,9 @@ package category
 import (
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 )
 
-var docStyle = lipgloss.NewStyle().Margin(1, 2)
+const emptyChoice = ""
 
 // State model to select the type of commit (see conventional commits)
 type typeSelection struct {
@@ -14,18 +13,25 @@ type typeSelection struct {
 	choice string
 }
 
-func (state typeSelection) Init() tea.Cmd {
+func (state *typeSelection) Value() string {
+	return state.choice
+}
+
+func (state *typeSelection) Init() tea.Cmd {
 	return nil
 	// TODO Load from live source
 	// return func() tea.Msg { return updateTypeOptions{types: getCommitTypes()} }
 }
 
-func (state typeSelection) View() string {
-	if state.choice != "" {
-		return state.choice
+func (state *typeSelection) View() string {
+	// Hack: Once selection is made, don't show the list view
+	// Necessary bc list won't disappear once program quites via tea.Quit See Update()
+	if state.choice != emptyChoice {
+		return ""
 	}
+
+	// Let the list do the heavy lifting
 	return "\n" + state.list.View()
-	// return docStyle.Render(state.list.View())
 }
 
 func makeList(items []list.Item) list.Model {
@@ -33,7 +39,7 @@ func makeList(items []list.Item) list.Model {
 }
 
 // Creates and returns a Program Model for choosing a git commit category
-func Model() tea.Model {
+func Model() *typeSelection {
 	var items []list.Item
 	for _, t := range getCommitTypes() {
 		items = append(items, t)
@@ -41,5 +47,14 @@ func Model() tea.Model {
 	list := makeList(items)
 	list.Title = "Choose Commit Category"
 
-	return typeSelection{list: list, choice: ""}
+	return &typeSelection{list: list, choice: emptyChoice}
+}
+
+func RunPrompt() (string, error) {
+	commitCategory := Model()
+	program := tea.NewProgram(commitCategory)
+	if err := program.Start(); err != nil {
+		return "", err
+	}
+	return commitCategory.Value(), nil
 }
