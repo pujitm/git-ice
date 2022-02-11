@@ -15,15 +15,46 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"pujitm/git-ice/category"
 	"pujitm/git-ice/compatibility"
+	"pujitm/git-ice/config"
 	"pujitm/git-ice/scope"
 	"pujitm/git-ice/subject"
+
+	"github.com/BurntSushi/toml"
 )
 
 func main() {
+	handleError := func(err error) {
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
+	configs, err := config.GetDefaultIceConfigs()
+	handleError(err)
+
+	fmt.Printf("%+v\n\n", config.ResolveConfig(configs))
+}
+
+func PrintDefaultConfig() {
+	var def bytes.Buffer
+	e := toml.NewEncoder(&def)
+	e.Encode(config.DefaultIceCommit())
+	fmt.Println(def.String())
+}
+
+func InteractiveCommit() {
+	handleError := func(err error) {
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+	}
 	commitType, err := category.RunPrompt()
 	handleError(err)
 
@@ -39,13 +70,6 @@ func main() {
 	header := fmt.Sprintf("%s%s: %s", commitType, formatScope(scope), subject)
 
 	fmt.Printf("# %s\n%s", header, formatCompatibility(compatible))
-}
-
-func handleError(err error) {
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
-	}
 }
 
 func formatScope(scope string) string {
