@@ -19,6 +19,7 @@ import (
 	"os"
 	"pujitm/git-ice/category"
 	"pujitm/git-ice/compatibility"
+	"pujitm/git-ice/scope"
 	"pujitm/git-ice/subject"
 )
 
@@ -29,15 +30,15 @@ func main() {
 	compatible, err := compatibility.Prompt()
 	handleError(err)
 
+	scope, err := scope.Prompt()
+	handleError(err)
+
 	subject, err := subject.Prompt()
 	handleError(err)
 
-	scope := ""
+	header := fmt.Sprintf("%s%s: %s", commitType, formatScope(scope), subject)
 
-	fmt.Printf("# %s%s: %s\n", commitType, scope, subject)
-
-	fmt.Printf("Results: %s, %v, %s\n", commitType, compatible, subject)
-
+	fmt.Printf("# %s\n%s", header, formatCompatibility(compatible))
 }
 
 func handleError(err error) {
@@ -45,4 +46,18 @@ func handleError(err error) {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+func formatScope(scope string) string {
+	if scope == "" {
+		return scope
+	}
+	return fmt.Sprintf("(%s)", scope)
+}
+
+func formatCompatibility(isCompatible bool) string {
+	if isCompatible {
+		return ""
+	}
+	return "Note: Is API-Breaking change\n"
 }
