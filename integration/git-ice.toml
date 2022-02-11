@@ -1,0 +1,15 @@
+Scopes = ["gcp"]
+
+[Resolve]
+  Types = "merge"
+  Scopes = "merge"
+
+[[Types]]
+  Git = "other"
+  Description = "Just an example"
+  Ordinal = 2
+
+[[Types]]
+  Git = "feat"
+  Description = "A different description"
+  Ordinal = 0

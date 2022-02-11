@@ -1,0 +1,10 @@
+Scopes = ["personal"]
+
+[Resolve]
+  Types = "merge"
+  Scopes = "replace"
+
+[[Types]]
+  Git = "mine"
+  Description = "Just an example"
+  Ordinal = 5

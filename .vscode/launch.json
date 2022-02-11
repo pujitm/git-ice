@@ -5,6 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Run Integration Tests",
+      "type": "go",
+      "request": "launch",
+      "mode": "test",
+      "program": "${workspaceFolder}/integration"
+      // "args": [
+      //   "-test.run",
+      //   "MyTestFunction"
+      // ]
+    },
+    {
       "name": "Attach to Process",
       "type": "go",
       "request": "attach",

@@ -1,0 +1,52 @@
+# This is the ice config file used for this project
+# Feel free to use it as a starting point
+
+Scopes = [
+  "terminal",
+  # Refers to config module in source code, not repository or project config
+  # TODO it may be helpful to include descriptions with scopes (like commit types)
+   "config", 
+]
+
+# The Resolve section matches a resolution strategy for each other config key to negotiate differences in multiple configs
+[Resolve]
+  # Merges will extend configs of lower priority/specificity
+  # You can also override "equal" values from them
+  # eg. you can provide a different description for the "feat" commit type
+  Types = "merge"
+  Scopes = "replace" # Replace ignores any values provided by lower configs. Note that the default config (config.DefaultIceCommit) is the lowest config
+
+[[Types]]
+  Git = "feat"
+  Description = "Add feature or change functionality"
+  Ordinal = 0 # Used to sort commit types in the ice prompt. Ordinance is shared among all configs.
+
+[[Types]]
+  Git = "fix"
+  Description = "Bug fix"
+  Ordinal = 1
+
+[[Types]]
+  Git = "inc"
+  Description = "Incremental work and progress"
+  Ordinal = 2
+
+[[Types]]
+  Git = "docs"
+  Description = "Change or update documentation"
+  Ordinal = 3
+
+[[Types]]
+  Git = "infra"
+  Description = "Infrastructure to deploy, run, and manage the application"
+  Ordinal = 4
+
+[[Types]]
+  Git = "config"
+  Description = "Configuration for project, repo, or build"
+  Ordinal = 5
+
+[[Types]]
+  Git = "exp"
+  Description = "Experiment with something"
+  Ordinal = 6
