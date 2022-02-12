@@ -4,31 +4,28 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-// type updateTypeOptions struct {
-// 	// New Commit Types that will replace the existing list options
-// 	types []commitType
-// }
+// type exitFunc func(state *selection) (tea.Model, tea.Cmd)
 
-func (state *typeSelection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (state *selection) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	exit := func(state *selection) (tea.Model, tea.Cmd) {
+		state.hide = true
+		return state, tea.Quit
+	}
 	switch msg := msg.(type) {
-	// case updateTypeOptions:
-	// 	var items []list.Item
-	// 	for _, t := range msg.types {
-	// 		items = append(items, t)
-	// 	}
-	// 	return typeSelection{list: makeList(items), choice: state.choice}, state.list.SetItems(items)
-
 	case tea.KeyMsg:
 		switch keystroke := msg.String(); keystroke {
-		case "ctrl+c":
-			return state, tea.Quit
+		case "ctrl+c", "q":
+			return exit(state)
 
 		case "enter":
-			// FIXME will panic on empty lists (item nil instead of commit type)
-			state.choice = state.list.SelectedItem().(commitType).Git
-			// return state, func() tea.Msg { return done{nextView: INPUTS} }
-			return state, tea.Quit
+			selected := state.list.SelectedItem()
+			if selected != nil {
+				state.choice = selected.(listItem).CommitType.Git
+			}
+
+			return exit(state)
 		}
+
 	case tea.WindowSizeMsg:
 		top, right, bottom, left := docStyle.GetMargin()
 		state.list.SetSize(msg.Width-left-right, msg.Height-top-bottom)

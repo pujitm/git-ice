@@ -27,6 +27,7 @@ type IceCommit struct {
 //
 // ie. "fix" in "fix(brain): my sanity"
 type CommitType struct {
+	// Bump      string // major, minor, patch, or empty
 	Git         string // Text representation in git commit header (i.e. "fix", "feat")
 	Description string // Purpose, utility, and use-cases for the commit type
 	Ordinal     uint   // Display position (lower ordinal value -> higher display position)

@@ -41,15 +41,18 @@ func PrintDefaultConfig() {
 }
 
 func InteractiveCommit() {
-	var err error
 	handleError := func(err error) {
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
 	}
+	iceConfig, err := config.ResolveDefaultConfig()
+	// TODO log config at debug level
+	handleError(err)
+
 	info := message.CommitInfo{}
-	info.CommitType, err = category.RunPrompt()
+	info.CommitType, err = category.RunPrompt(iceConfig.Types)
 	handleError(err)
 
 	info.BackwardsCompatible, err = compatibility.Prompt()

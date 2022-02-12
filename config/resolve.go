@@ -17,8 +17,10 @@ package config
 import "sort"
 
 // Resolves a unified config from the default config resolution path
-// [ Default, Project, Personal ]
-// Using GetDefaultIceConfigs()
+//
+// [ Default, Project, Personal ] (lowest to highest specificity)
+//
+// Using `GetDefaultIceConfigs()`
 func ResolveDefaultConfig() (IceCommit, error) {
 	configs, err := GetDefaultIceConfigs()
 	if err != nil {
