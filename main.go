@@ -18,12 +18,13 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"pujitm/git-ice/category"
-	"pujitm/git-ice/compatibility"
-	"pujitm/git-ice/config"
-	"pujitm/git-ice/message"
-	"pujitm/git-ice/scope"
-	"pujitm/git-ice/subject"
+
+	"github.com/pujitm/git-ice/category"
+	"github.com/pujitm/git-ice/compatibility"
+	"github.com/pujitm/git-ice/config"
+	"github.com/pujitm/git-ice/message"
+	"github.com/pujitm/git-ice/scope"
+	"github.com/pujitm/git-ice/subject"
 
 	"github.com/BurntSushi/toml"
 )

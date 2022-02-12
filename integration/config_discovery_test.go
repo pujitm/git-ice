@@ -17,8 +17,9 @@ package integration_test
 import (
 	"log"
 	"os"
-	"pujitm/git-ice/config"
 	"testing"
+
+	"github.com/pujitm/git-ice/config"
 )
 
 func getConfigs(t *testing.T) []config.IceCommit {

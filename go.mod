@@ -1,4 +1,4 @@
-module pujitm/git-ice
+module github.com/pujitm/git-ice
 
 go 1.17
 

@@ -1,15 +1,7 @@
 # Git Interactive/Improved Commit Experience
 
-*ability to go back might be a good feature*
+*ability to go back to prior prompt might be a good feature*
 
-To override default config path, path to config file in local config:
+`go install` to install to local machine ([must have `$GOPATH/bin` in path](https://www.digitalocean.com/community/tutorial_series/how-to-install-and-set-up-a-local-programming-environment-for-go))
 
-`git config --local ice.config git-ice.toml`
-
-set personal config 
-
-`git config --global ice.localconfig ~/.git-ice.toml` Note that this can be specified per-project with --local instead of --global
-
-to remove ice config
-
-`git config --local --remove-section ice.config`
+Run with `git ice`
