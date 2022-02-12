@@ -21,6 +21,7 @@ import (
 	"pujitm/git-ice/category"
 	"pujitm/git-ice/compatibility"
 	"pujitm/git-ice/config"
+	"pujitm/git-ice/message"
 	"pujitm/git-ice/scope"
 	"pujitm/git-ice/subject"
 
@@ -28,17 +29,7 @@ import (
 )
 
 func main() {
-	handleError := func(err error) {
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			os.Exit(1)
-		}
-	}
-
-	configs, err := config.GetDefaultIceConfigs()
-	handleError(err)
-
-	fmt.Printf("%+v\n\n", config.ResolveConfig(configs))
+	InteractiveCommit()
 }
 
 func PrintDefaultConfig() {
@@ -49,39 +40,35 @@ func PrintDefaultConfig() {
 }
 
 func InteractiveCommit() {
+	var err error
 	handleError := func(err error) {
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
 	}
-	commitType, err := category.RunPrompt()
+	info := message.CommitInfo{}
+	info.CommitType, err = category.RunPrompt()
 	handleError(err)
 
-	compatible, err := compatibility.Prompt()
+	info.BackwardsCompatible, err = compatibility.Prompt()
 	handleError(err)
 
-	scope, err := scope.Prompt()
+	info.Scope, err = scope.Prompt()
 	handleError(err)
 
-	subject, err := subject.Prompt()
+	info.Subject, err = subject.Prompt()
 	handleError(err)
 
-	header := fmt.Sprintf("%s%s: %s", commitType, formatScope(scope), subject)
+	editBody, err := message.PromptBodyEdit()
+	handleError(err)
 
-	fmt.Printf("# %s\n%s", header, formatCompatibility(compatible))
-}
-
-func formatScope(scope string) string {
-	if scope == "" {
-		return scope
+	args := []string{}
+	if editBody {
+		args = append(args, "--edit")
 	}
-	return fmt.Sprintf("(%s)", scope)
-}
 
-func formatCompatibility(isCompatible bool) string {
-	if isCompatible {
-		return ""
-	}
-	return "Note: Is API-Breaking change\n"
+	info.Args = args
+	err = message.RunCommit(info)
+	handleError(err)
 }
